@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-slate-950 text-white overflow-x-hidden;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Custom "Deep Fried" Animations */
+@keyframes deep-fry-shake {
+  0%, 100% { transform: translate(0, 0); }
+  25% { transform: translate(-2px, 1px) rotate(-0.5deg); }
+  50% { transform: translate(2px, -1px) rotate(0.5deg); }
+  75% { transform: translate(-1px, -2px) rotate(-0.5deg); }
+}
+
+@keyframes oil-crackle {
+  0%, 100% { filter: saturate(1) contrast(1) brightness(1); }
+  50% { filter: saturate(5) contrast(1.8) brightness(1.2); }
+}
+
+.deep-fry-active {
+  animation: deep-fry-shake 0.08s infinite !important;
+}
+
+.oil-crackle-active {
+  animation: oil-crackle 0.5s infinite ease-in-out;
+}
