@@ -187,13 +187,13 @@ const App = () => {
       )}
 
       {step === 'form' && ( // Student Input Form
-        <div className="w-full max-w-2xl bg-slate-900/50 backdrop-blur-xl border border-slate-800 p-8 rounded-3xl shadow-2xl">
+        <div className="w-full max-w-2xl bg-slate-900/50 backdrop-blur-xl border border-slate-800 p-4 sm:p-8 rounded-3xl shadow-2xl">
           <div className="flex items-center gap-3 mb-8">
             <Brain className="text-orange-500" />
             <h2 className="text-2xl font-bold">Student Intel</h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
             <div className="col-span-2">
               <label className="block text-sm font-semibold text-slate-400 mb-2">Student Name (for the roast)</label>
               <input 
@@ -204,7 +204,7 @@ const App = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-slate-400 mb-2">Attendance: {formData.attendance}%</label>
+              <label className="block text-sm font-semibold text-slate-400 mb-2 break-words">Attendance: {formData.attendance}%</label>
               <input 
                 type="range" name="attendance" min="0" max="100" value={formData.attendance} // Added transition and hover effect
                 className="w-full accent-orange-500" 
@@ -250,7 +250,7 @@ const App = () => {
               </label>
               <input 
                 type="number" name="sleep" value={formData.sleep} // Added transition and hover effect
-                className="bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 outline-none text-white"
+                className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 sm:px-4 sm:py-3outline-none text-white"
                 onChange={handleChange}
               />
             </div>
