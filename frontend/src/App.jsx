@@ -187,15 +187,15 @@ const App = () => {
       )}
 
       {step === 'form' && ( // Student Input Form
-        <div className="w-full max-w-2xl bg-slate-900/50 backdrop-blur-xl border border-slate-800 p-4 sm:p-8 rounded-3xl shadow-2xl">
+        <div className="w-full max-w-4xl bg-slate-900/50 backdrop-blur-xl border border-slate-800 p-5 sm:p-8 rounded-3xl shadow-2xl">
           <div className="flex items-center gap-3 mb-8">
             <Brain className="text-orange-500" />
             <h2 className="text-2xl font-bold">Student Intel</h2>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
-            <div className="col-span-2">
-              <label className="block text-sm font-semibold text-slate-400 mb-2">Student Name (for the roast)</label>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 ">
+            <div className="col-span-1 md:col-span-2">
+              <label className="block text-base font-semibold text-slate-300 mb-2">Student Name (for the roast)</label>
               <input 
                 type="text" name="name" placeholder="E.g. Broke Scholar" value={formData.name} // Added transition and hover effect
                 className="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 focus:ring-2 focus:ring-orange-500 outline-none text-white"
@@ -204,7 +204,7 @@ const App = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-slate-400 mb-2 break-words">Attendance: {formData.attendance}%</label>
+              <label className="block text-base md:text-sm font-semibold text-slate-400 mb-2 break-words">Attendance: {formData.attendance}%</label>
               <input 
                 type="range" name="attendance" min="0" max="100" value={formData.attendance} // Added transition and hover effect
                 className="w-full accent-orange-500" 
@@ -213,7 +213,7 @@ const App = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-slate-400 mb-2">Internal Marks: {formData.internalMarks}/30</label>
+              <label className="block text-base font-semibold text-slate-300 mb-2">Internal Marks: {formData.internalMarks}/30</label>
               <input 
                 type="range" name="internalMarks" min="0" max="30" value={formData.internalMarks} // Added transition and hover effect
                 className="w-full accent-orange-500" 
@@ -222,7 +222,7 @@ const App = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-slate-400 mb-2">Assignments Done: {formData.assignments}%</label>
+              <label className="block text-base font-semibold text-slate-300 mb-2 break-words">Assignments Done: {formData.assignments}%</label>
               <input 
                 type="range" name="assignments" min="0" max="100" value={formData.assignments}
                 className="w-full accent-orange-500" 
@@ -231,7 +231,7 @@ const App = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-slate-400 mb-2">Exam Difficulty</label>
+              <label className="block text-base font-semibold text-slate-300 mb-2">Exam Difficulty</label>
               <select 
                 name="difficulty" 
                 value={formData.difficulty}
@@ -245,34 +245,34 @@ const App = () => {
             </div>
 
             <div className="flex flex-col">
-              <label className="flex items-center gap-2 text-sm font-semibold text-slate-400 mb-2">
+              <label className="flex items-center gap-2 text-base font-semibold text-slate-300 mb-2">
                 <Moon size={16}/> Sleep (hrs)
               </label>
               <input 
                 type="number" name="sleep" value={formData.sleep} // Added transition and hover effect
-                className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 sm:px-4 sm:py-3outline-none text-white"
+                className="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-4 text-lg outline-none text-white"
                 onChange={handleChange}
               />
             </div>
 
             <div className="flex flex-col">
-              <label className="flex items-center gap-2 text-sm font-semibold text-slate-400 mb-2">
+              <label className="flex items-center gap-2 text-base font-semibold text-slate-300 mb-2">
                 <BookOpen size={16}/> Study (hrs)
               </label>
               <input 
                 type="number" name="study" value={formData.study}
-                className="bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 outline-none text-white"
+                className="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-4 text-lg outline-none text-white"
                 onChange={handleChange}
               />
             </div>
 
             <div className="flex flex-col">
-              <label className="flex items-center gap-2 text-sm font-semibold text-slate-400 mb-2">
+              <label className="flex items-center gap-2 text-base font-semibold text-slate-300 mb-2">
                 <AlertTriangle size={16} className="text-red-500"/> Active Backlogs
               </label>
               <input 
                 type="number" name="backlogs" value={formData.backlogs} // Added transition and hover effect
-                className="bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 outline-none text-white"
+                className="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-4 text-lg outline-none text-white"
                 onChange={handleChange}
               />
             </div>
@@ -298,7 +298,7 @@ const App = () => {
           ref={resultRef}
           className={`w-full max-w-4xl text-center space-y-8 py-10 px-6 animate-in zoom-in duration-500 bg-slate-950 relative ${result.status.includes('Deep Fried') ? 'oil-crackle-active' : ''}`}
         >
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
             
             {/* Left: Score and Roast */}
             <div className="space-y-6 order-2 md:order-1">
