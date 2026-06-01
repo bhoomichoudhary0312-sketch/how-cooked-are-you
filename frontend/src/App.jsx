@@ -53,9 +53,27 @@ const App = () => {
   const [randomQuote] = useState(quotes[Math.floor(Math.random() * quotes.length)]);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
+  const { name, value } = e.target;
+
+  let newValue = value;
+
+  if (name === "sleep") {
+    newValue = Math.max(0, Math.min(24, Number(value) || 0));
+  }
+
+  if (name === "study") {
+    newValue = Math.max(0, Math.min(24, Number(value) || 0));
+  }
+
+  if (name === "backlogs") {
+    newValue = Math.max(0, Number(value) || 0);
+  }
+
+  setFormData({
+    ...formData,
+    [name]: newValue,
+  });
+};
 
   const startAnalysis = () => setStep('form');
 
@@ -276,7 +294,7 @@ const App = () => {
                 <Moon size={16}/> Sleep (hrs)
               </label>
               <input 
-                type="number" name="sleep" value={formData.sleep} // Added transition and hover effect
+                type="number" name="sleep" min="0" max="24" value={formData.sleep} // Added transition and hover effect
                 className="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-4 text-lg outline-none text-white"
                 onChange={handleChange}
               />
@@ -287,7 +305,8 @@ const App = () => {
                 <BookOpen size={16}/> Study (hrs)
               </label>
               <input 
-                type="number" name="study" value={formData.study}
+                type="number" name="study"   min="0" max="24"
+                value={formData.study}
                 className="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-4 text-lg outline-none text-white"
                 onChange={handleChange}
               />
@@ -298,7 +317,8 @@ const App = () => {
                 <AlertTriangle size={16} className="text-red-500"/> Active Backlogs
               </label>
               <input 
-                type="number" name="backlogs" value={formData.backlogs} // Added transition and hover effect
+                type="number" name="backlogs"   min="0"
+                 value={formData.backlogs} // Added transition and hover effect
                 className="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-4 text-lg outline-none text-white"
                 onChange={handleChange}
               />
