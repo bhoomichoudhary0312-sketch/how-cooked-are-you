@@ -147,20 +147,40 @@ const App = () => {
     }
   };
 
+  const shareText = result
+  ? `
+🔥 I am ${result.cooked_percentage}% cooked!
+
+📊 Status: ${result.status}
+
+🎯 Pass Probability: ${result.pass_probability}%
+
+💀 "${result.roast}"
+
+Check your academic fate:
+${window.location.href}
+`
+  : "";
+
   const shareActions = {
-    twitter: () => {
-      const text = `${formData.name || "I"} am ${result.cooked_percentage}% cooked! Status: ${result.status}. Roast: "${result.roast}" 💀\n\nCheck your academic fate:`;
-      const url = window.location.href;
-      window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
-    },
+   twitter: () => {
+  window.open(
+    `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`,
+    '_blank'
+  );
+},
     whatsapp: () => {
-      const text = `${formData.name || "I"} am ${result.cooked_percentage}% cooked! Status: ${result.status}. Roast: "${result.roast}" 💀 Check your academic fate: ${window.location.href}`;
-      window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
-    },
+  window.open(
+    `https://api.whatsapp.com/send?text=${encodeURIComponent(shareText)}`,
+    '_blank'
+  );
+},
     telegram: () => {
-      const text = `${formData.name || "I"} am ${result.cooked_percentage}% cooked! Status: ${result.status}. Roast: "${result.roast}" 💀 Check your academic fate:`;
-      window.open(`https://t.me/share/url?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(text)}`, '_blank');
-    },
+  window.open(
+    `https://t.me/share/url?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(shareText)}`,
+    '_blank'
+  );
+},
     facebook: () => {
       window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`, '_blank');
     },
@@ -350,32 +370,96 @@ const App = () => {
           ref={resultRef}
           className={`w-full max-w-4xl text-center space-y-8 py-10 px-6 animate-in zoom-in duration-500 bg-slate-950 relative ${result.status.includes('Deep Fried') ? 'oil-crackle-active' : ''}`}
         >
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
             
             {/* Left: Score and Roast */}
             <div className="space-y-6 order-2 md:order-1">
-              <h2 className="text-5xl font-black italic tracking-tighter">
-                {formData.name.toUpperCase() || "BRO"}, YOU ARE <span className={`transition-colors ${result.status.includes('Deep Fried') ? 'text-red-600 deep-fry-active inline-block' : 'text-orange-500'}`}>{result.cooked_percentage ?? 0}%</span> COOKED
+              <h2 className="text-4xl md:text-6xl font-black italic tracking-tight leading-tight">
+                {formData.name.toUpperCase() || "BRO"}, YOU ARE <span className={`transition-colors ${result.status.includes('Deep Fried') ? 'text-red-600 deep-fry-active inline-block' : 'text-orange-500'}`}><span className="block text-6xl md:text-8xl">
+  {result.cooked_percentage ?? 0}%
+</span></span> COOKED
               </h2>
               
               <div className={`p-8 bg-slate-900/50 backdrop-blur-md rounded-3xl border ${result.status.includes('Deep Fried') ? 'border-red-600 shadow-[0_0_50px_rgba(220,38,38,0.5)] deep-fry-active' : 'border-slate-800'} shadow-2xl transition-all`}>
                 <p className="text-2xl italic text-slate-300">"{result.roast}"</p>
                 <div className={`mt-6 text-xl font-bold uppercase tracking-widest ${result.status.includes('Deep Fried') ? 'text-red-500 animate-pulse' : 'text-orange-500'}`}>
-                  Status: {result.status}
+                  <div
+                  className={`inline-block px-5 py-2 rounded-full font-bold text-lg
+                  ${
+                    result.status.includes("Academic Weapon")
+                    ? "bg-green-600"
+                    : result.status.includes("Surviving")
+                    ? "bg-blue-600"
+                    : result.status.includes("Slightly Cooked")
+                    ? "bg-yellow-500 text-black"
+                    : result.status.includes("Warning")
+                    ? "bg-orange-600"
+                    : "bg-red-600"
+          }`}
+>
+            {result.status}
+            </div>
                 </div>
               </div>
             </div>
+            
+            {/* Right Column */}
+<div className="space-y-6 order-1 md:order-2">
 
-            {/* Random Motivational Quote */}
-            <div className="absolute top-4 right-4 max-w-xs hidden lg:block p-4 bg-slate-900/80 backdrop-blur rounded-2xl border border-slate-800 italic text-slate-400 text-xs">
-              "{randomQuote}"
-            </div>
+  {/* Pass Probability */}
+  <div className="bg-green-500/10 border border-green-500/30 p-5 rounded-3xl">
+    <h3 className="text-sm uppercase text-green-400 mb-2">
+      Pass Probability
+    </h3>
 
-            {/* Right: Doughnut Chart */}
-            <div className={`bg-slate-900/30 p-6 rounded-3xl border ${result.status.includes('Deep Fried') ? 'border-red-600 deep-fry-active' : 'border-slate-800'} order-1 md:order-2 h-64 flex items-center justify-center`}>
-              <Doughnut data={doughnutData} options={{ cutout: '70%', plugins: { legend: { display: false } } }} />
-            </div>
-          </div>
+    <div className="text-4xl font-black text-green-400">
+      {result.pass_probability}%
+    </div>
+  </div>
+
+  {/* AI Recommendation */}
+  <div className="bg-slate-500/10 border border-slate-500/30 p-5 rounded-3xl">
+    <h3 className="text-lg font-bold text-orange-400 mb-2">
+      AI Recommendation
+    </h3>
+
+    <p className="text-slate-300">
+      {
+        result.status.includes("Academic Weapon")
+          ? "Keep doing what you're doing. You're ahead of the curve."
+          : result.status.includes("Surviving")
+          ? "A little more consistency could push you into top form."
+          : result.status.includes("Slightly Cooked")
+          ? "Increase study hours and finish pending assignments."
+          : result.status.includes("Warning")
+          ? "Prioritize academics now. Recovery is still possible."
+          : "Emergency mode activated. Study plan required immediately."
+      }
+    </p>
+  </div>
+
+  {/* Doughnut Chart */}
+  <div className={`bg-slate-900/30 p-6 rounded-3xl border ${
+    result.status.includes('Deep Fried')
+      ? 'border-red-600 deep-fry-active'
+      : 'border-slate-800'
+  } h-64 flex items-center justify-center`}>
+    <Doughnut
+      data={doughnutData}
+      options={{
+        cutout: '70%',
+        plugins: {
+          legend: {
+            display: false,
+          },
+        },
+      }}
+    />
+  </div>
+
+</div>
+</div>
+
 
           {/* Bottom: Survival Comparison Bar Chart */}
           <div className="bg-slate-900/50 p-8 rounded-3xl border border-slate-800">
