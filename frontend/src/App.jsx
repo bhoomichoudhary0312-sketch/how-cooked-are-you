@@ -29,6 +29,7 @@ const App = () => {
   const [result, setResult] = useState(null);
   const [showShareOptions, setShowShareOptions] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const resultRef = useRef(null);
   const [formData, setFormData] = useState({
     name: '',
@@ -65,24 +66,50 @@ const App = () => {
   };
 
   const handlePredict = async () => {
-    setLoading(true);
-    try {
-      const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://how-cooked-backend.onrender.com';
-      const response = await fetch(`${API_BASE_URL}/predict`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      });
-      const data = await response.json();
-      setResult(data);
-      setStep('result');
-    } catch (error) {
-      console.error("Error connecting to backend:", error);
-      alert("The kitchen is closed! (Make sure the Flask server is running on port 5000)");
-    } finally {
-      setLoading(false);
-    }
-  };
+    setErrorMessage('');
+
+  // Validation
+  if (
+    !formData.name.trim() ||
+    formData.attendance === '' ||
+    formData.internalMarks === '' ||
+    formData.assignments === '' ||
+    formData.sleep === '' ||
+    formData.study === '' ||
+    formData.backlogs === ''
+  ) {
+    setErrorMessage("🍳 Academic records incomplete! Fill in all required details before entering the kitchen.");
+    return;
+  }
+
+  setLoading(true);
+
+  try {
+    const API_BASE_URL =
+      import.meta.env.VITE_API_URL ||
+      'https://how-cooked-backend.onrender.com';
+
+    const response = await fetch(`${API_BASE_URL}/predict`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(formData),
+    });
+
+    const data = await response.json();
+    setResult(data);
+    setStep('result');
+
+  } catch (error) {
+    console.error("Error connecting to backend:", error);
+
+    alert(
+      "🔥 The kitchen servers are taking a smoke break. Please try again in a moment."
+    );
+
+  } finally {
+    setLoading(false);
+  }
+};
 
   const handleDownload = async () => {
     if (resultRef.current) {
@@ -278,7 +305,12 @@ const App = () => {
             </div>
           </div>
 
-          <button 
+          {errorMessage && (
+           <div className="mb-4 p-4 rounded-xl bg-red-500/10 border border-red-500/30 text-red-300 text-sm font-medium">
+            ⚠️ {errorMessage}
+            </div>
+            )}
+            <button 
             disabled={loading}
             className={`w-full mt-10 py-4 ${loading ? 'bg-slate-700' : 'bg-orange-600 hover:bg-orange-500 hover:scale-[1.01]'} text-white font-bold rounded-xl transition-all duration-200 shadow-lg shadow-orange-900/20`} // Added hover:scale and transition-all
             onClick={handlePredict}
