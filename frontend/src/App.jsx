@@ -58,16 +58,22 @@ const App = () => {
   let newValue = value;
 
   if (name === "sleep") {
-    newValue = Math.max(0, Math.min(24, Number(value) || 0));
-  }
+  newValue = value === ""
+    ? ""
+    : Math.max(0, Math.min(24, Number(value)));
+}
 
-  if (name === "study") {
-    newValue = Math.max(0, Math.min(24, Number(value) || 0));
-  }
+if (name === "study") {
+  newValue = value === ""
+    ? ""
+    : Math.max(0, Math.min(24, Number(value)));
+}
 
-  if (name === "backlogs") {
-    newValue = Math.max(0, Number(value) || 0);
-  }
+if (name === "backlogs") {
+  newValue = value === ""
+    ? ""
+    : Math.max(0, Number(value));
+}
 
   setFormData({
     ...formData,
@@ -106,6 +112,8 @@ const App = () => {
     const API_BASE_URL =
       import.meta.env.VITE_API_URL ||
       'https://how-cooked-backend.onrender.com';
+    
+    console.log("API URL:", API_BASE_URL);
 
     const response = await fetch(`${API_BASE_URL}/predict`, {
       method: 'POST',
@@ -113,15 +121,23 @@ const App = () => {
       body: JSON.stringify(formData),
     });
 
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Server error: ${response.status} - ${errorText}`);
+    }
+
     const data = await response.json();
     setResult(data);
     setStep('result');
 
   } catch (error) {
-    console.error("Error connecting to backend:", error);
+    console.error("Detailed Error:", error);
 
+    const isTimeout = error.message.includes('Failed to fetch') || error.message.includes('Load failed');
     alert(
-      "🔥 The kitchen servers are taking a smoke break. Please try again in a moment."
+      isTimeout 
+        ? "🔥 The kitchen is warming up! Please wait a few seconds and try again (the server was sleeping)." 
+        : "❌ Something went wrong in the kitchen. Check the console for details."
     );
 
   } finally {
@@ -385,17 +401,19 @@ ${window.location.href}
                 <div className={`mt-6 text-xl font-bold uppercase tracking-widest ${result.status.includes('Deep Fried') ? 'text-red-500 animate-pulse' : 'text-orange-500'}`}>
                   <div
                   className={`inline-block px-5 py-2 rounded-full font-bold text-lg
-                  ${
-                    result.status.includes("Academic Weapon")
-                    ? "bg-green-600"
-                    : result.status.includes("Surviving")
-                    ? "bg-blue-600"
-                    : result.status.includes("Slightly Cooked")
-                    ? "bg-yellow-500 text-black"
-                    : result.status.includes("Warning")
-                    ? "bg-orange-600"
-                    : "bg-red-600"
-          }`}
+${
+  result.status.includes("Academic Weapon")
+    ? "bg-emerald-500 text-slate-950"
+    : result.status.includes("Surviving")
+    ? "bg-cyan-500 text-slate-950"
+    : result.status.includes("Slightly Cooked")
+    ? "bg-yellow-400 text-slate-950"
+    : result.status.includes("Warning")
+    ? "bg-orange-500 text-white"
+    : result.status.includes("Deep Fried")
+    ? "bg-gradient-to-r from-red-700 to-red-500 text-white shadow-lg shadow-red-900/50"
+    : "bg-slate-600 text-white"
+}`}
 >
             {result.status}
             </div>
