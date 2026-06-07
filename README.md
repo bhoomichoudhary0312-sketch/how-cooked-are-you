@@ -13,11 +13,11 @@ Backend: https://how-cooked-backend.onrender.com
 
 ### Home Page
 
-![Home Page](home.png.png)
+![Home Page](home.png)
 
 ### Result Page
 
-![Result Page](result.png.png)
+![Result Page](result.png)
 
 ## Features
 
